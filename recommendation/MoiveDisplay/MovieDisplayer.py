@@ -2,8 +2,6 @@
 # coding: utf-8
 import requests
 import json
-import os
-import urllib
 from IPython.display import Image
 from IPython.display import display
 from IPython.display import HTML
@@ -15,9 +13,9 @@ class MovieDisplayer(object):
         self.url = url
         self.headers = headers
         self.payload = payload
-        
+
     def getImageBasePath(self,size='w185'):
-        proxies = { "http": "http://localhost:1080", "https": "http://1ocalhost:1080", }   
+        proxies = { "http": "http://localhost:1080", "https": "http://1ocalhost:1080", }
         response = requests.get(self.url+'/configuration',params=self.payload,headers=self.headers)
         response = json.loads(response.text)
         base_url = response['images']['base_url']+'w185'
@@ -34,17 +32,17 @@ class MovieDisplayer(object):
         except:
             print('Failed to get url for imdb: {0}'.format(imdb))
         return base_url+file_path
-    
-    def displayMoive(self,imdb):
+    def displayMoive(self, imdb):
         base_url = self.getImageBasePath()
         image_url = self.get_poster(imdb,base_url)
-#         image = ("<img style='width: 100px; margin: 0px; float: left; border: 1px solid black;' src={0} />"
-#                 .format(image_url))
-#         display(HTML(image))
-        image = io.imread(image_url)
-        io.imshow(image)
-        io.show()
-if __name__ == '__main__':        
+        image = ("<img style='width: 100px; margin: 0px; float: left; border: 1px solid black;' src={0} />"
+                 .format(image_url))
+        display(HTML(image))
+        #image = io.imread(image_url)
+        #io.imshow(image)
+        #io.show()
+
+if __name__ == '__main__':
     movieDisplayer = MovieDisplayer()
     movieDisplayer.displayMoive(114709)
 

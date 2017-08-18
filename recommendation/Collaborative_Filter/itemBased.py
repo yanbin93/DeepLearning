@@ -6,13 +6,13 @@
 #Mail: yanbin918@gmail.com
 #Created Time: 2017-08-10 10:33:09
 ############################
-import math ,operator,random
+import math ,operator
 import sys
 sys.path.append('../')
 from ml_latest_small.data import *
 
-class ItemCFModel(object):   
-    def __init__(self,train,W,K=5,N=5):
+class ItemCFModel(object):
+    def __init__(self,train,W,K=5,N=10):
         self.train = train
         self.W = W
         self.K = K
@@ -50,7 +50,7 @@ class ItemCFModel(object):
 
 
 class ItemCF(object):
-    def itemSimilarity(self,train):            
+    def itemSimilarity(self,train):
 #calculate co-rated items between users
         C = dict()
         N = dict()
@@ -99,15 +99,14 @@ class ItemCF(object):
             for j,cij in related_items.items():
                 W[i][j] = cij/math.sqrt(N[i] * N[j])
         return W
-    
-   
+
+
     def train(self,train,K=5,Normalization=False):
         W = self.itemSimilarity2(train)
         if Normalization :
             W = self.Normalization(W)
         return ItemCFModel(train,W)
-        
-        
+
     def Normalization(self,W):
         for i,items in W.items():
             m = max(items.values())
